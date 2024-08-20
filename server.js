@@ -1,19 +1,10 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-
-
-const filePath = path.join(__dirname, 'messages.txt');
-
-
-const saveMessage = (message) => {
-    fs.appendFileSync(filePath, message + '\n');
-};
-
+const { saveMessage } = require('./messageHandler'); 
 
 const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/') {
-
         fs.readFile(path.join(__dirname, 'index.html'), (err, content) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -24,7 +15,6 @@ const server = http.createServer((req, res) => {
             }
         });
     } else if (req.method === 'POST' && req.url === '/send') {
-
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
